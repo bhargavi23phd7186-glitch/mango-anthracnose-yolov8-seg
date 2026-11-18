@@ -1,0 +1,18 @@
+# Core deep learning framework
+ultralytics==8.3.233
+
+# Image processing
+opencv-python
+Pillow
+
+# Numerical operations
+numpy
+
+# Configuration and data handling
+PyYAML
+
+# Visualization
+matplotlib
+
+# Data augmentation
+albumentations
