@@ -1,45 +1,92 @@
+# Roboflow Dataset Export
 
-# Roboflow Dataset
+## 1. Dataset Overview
 
-This directory is intended to organize the dataset exported from Roboflow for mango anthracnose instance segmentation.
+The mango anthracnose dataset used in this research was prepared and annotated using Roboflow.
 
-## 1. Polygon Annotation
+The dataset contains mango leaf images with two annotation classes:
 
-Manual polygon annotations were created for:
-- Mango leaf regions
-- Anthracnose lesion regions
+| Class ID | Class Name |
+|---|---|
+| 0 | Anthracnose |
+| 1 | Leaf |
 
-## 2. Image Preprocessing
+## 2. Polygon Annotation
 
-The following preprocessing operations were applied in Roboflow:
+Polygon annotations were used to represent mango leaf regions and anthracnose-affected regions.
+
+The annotations are intended for instance segmentation using YOLOv8-Seg.
+
+## 3. Image Preprocessing
+
+The following preprocessing operations were configured in Roboflow:
 
 - Auto-Orient
 - Resize: Stretch to 640 × 640 pixels
 
-## 3. Data Augmentation
+## 4. Data Augmentation
 
 The Roboflow augmentation configuration included:
 
-- Outputs per training example: 3
-- Horizontal flip
-- Rotation: -10° to +10°
-- Brightness: -15% to +15%
-- Exposure: -10% to +10%
-- Noise: Up to 0.1% of pixels
+| Augmentation | Configuration |
+|---|---|
+| Outputs per training example | 3 |
+| Flip | Horizontal |
+| Rotation | -10° to +10° |
+| Brightness | -15% to +15% |
+| Exposure | -10% to +10% |
+| Noise | Up to 0.1% of pixels |
 
-Augmentation settings were configured for the training data.
+These settings were configured for the training dataset.
 
-## 4. Dataset Export
+## 5. Dataset Partitioning
 
-The dataset was exported in YOLOv8-Seg segmentation format.
+The dataset was configured using the following split:
 
-Expected organization:
+| Dataset | Percentage |
+|---|---:|
+| Training | 70% |
+| Validation | 15% |
+| Testing | 15% |
 
-- Training images and labels
-- Validation images and labels
-- Testing images and labels
-- data.yaml configuration file
+## 6. Export Format
 
-## 5. Dataset Availability
+The dataset was downloaded from Roboflow in YOLOv8 format for the instance segmentation workflow.
 
-The exported dataset is maintained separately and is not included in this repository.
+The expected directory structure is:
+
+```text
+roboflow_export/
+│
+├── train/
+│   ├── images/
+│   └── labels/
+│
+├── valid/
+│   ├── images/
+│   └── labels/
+│
+├── test/
+│   ├── images/
+│   └── labels/
+│
+└── data.yaml
+```
+
+## 7. Dataset Configuration
+
+The Roboflow dataset configuration identifies:
+
+- Workspace: vidhu-9wo34
+- Project: mango-pylut
+- Export version: 2
+- Number of classes: 2
+- Class names: anthracnose and leaf
+
+## 8. Dataset Access
+
+The exported dataset is maintained separately from this GitHub repository.
+
+Dataset access and redistribution are subject to the applicable Roboflow dataset license and attribution requirements.
+
+The exported annotation files should be verified to ensure polygon coordinates are preserved for both classes before YOLOv8-Seg training.
