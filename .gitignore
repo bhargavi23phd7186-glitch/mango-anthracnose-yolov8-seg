@@ -1,0 +1,36 @@
+# Python cache files
+__pycache__/
+*.py[cod]
+*.pyo
+
+# Virtual environments
+venv/
+.venv/
+env/
+
+# Jupyter Notebook checkpoints
+.ipynb_checkpoints/
+
+# Training outputs
+runs/
+mango_leaf_seg/
+*.log
+
+# Model weights
+*.pt
+*.onnx
+*.engine
+
+# Dataset files - do not upload raw or exported datasets
+dataset/raw_videos/
+dataset/extracted_frames/
+dataset/processed_frames/
+dataset/roboflow_export/train/
+dataset/roboflow_export/valid/
+dataset/roboflow_export/test/
+
+# Temporary files
+*.tmp
+*.bak
+.DS_Store
+Thumbs.db
