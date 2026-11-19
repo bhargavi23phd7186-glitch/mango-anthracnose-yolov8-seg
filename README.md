@@ -1,84 +1,117 @@
-# Mango Anthracnose Detection and Disease Severity Estimation Using YOLOv8-Seg
+# Polygon-Based Instance Segmentation for Quantitative Severity Estimation of Mango Anthracnose Using YOLOv8-Seg
 
 ## 1. Project Overview
 
 This repository contains the Python implementation of a computer vision framework for mango anthracnose detection, instance segmentation and quantitative disease severity estimation using YOLOv8-Seg.
 
-The proposed approach uses polygon-based annotations to represent mango leaf regions and anthracnose-affected areas. The segmentation masks are used for pixel-wise disease area calculation and quantitative severity estimation.
+The proposed methodology uses polygon-based instance segmentation to identify mango leaf regions and anthracnose-affected regions. The segmented regions are subsequently used for pixel-wise disease area calculation and quantitative severity estimation.
 
-The implementation is intended to support automated mango leaf disease analysis under real-field image conditions.
+The study focuses on automated mango leaf disease analysis under real-field orchard conditions, considering variations in illumination, background and image appearance.
 
-## 2. Key Features
+## 2. Research Objectives
 
-- Mango leaf detection and instance segmentation.
-- Leaf validation before disease analysis.
-- Anthracnose lesion segmentation.
-- Polygon-based representation of leaf and disease regions.
-- Pixel-wise calculation of diseased and healthy leaf areas.
-- Quantitative disease severity estimation.
-- Severity classification into Healthy, Mild, Moderate and Severe categories.
-- Model evaluation using detection and segmentation performance metrics.
+The main objectives of this research are:
 
-## 3. Research Methodology
+- Detect and segment mango leaf regions.
+- Identify anthracnose-affected regions using polygon-based segmentation.
+- Validate detected leaf regions before disease analysis.
+- Calculate diseased and healthy leaf areas using segmentation masks.
+- Estimate disease severity as a percentage of the affected leaf area.
+- Classify disease severity into Healthy, Mild, Moderate and Severe categories.
 
-The proposed processing pipeline consists of the following stages:
+## 3. Proposed Methodology
 
-1. Mango orchard image and video acquisition.
-2. Video frame extraction, where applicable.
-3. Image annotation using Roboflow.
-4. Image preprocessing and augmentation.
-5. YOLOv8-Seg dataset export.
-6. Dataset partitioning.
-7. YOLOv8n-Seg model training.
-8. Leaf detection and validation.
-9. Anthracnose lesion segmentation.
-10. Pixel-wise disease area calculation.
-11. Disease severity percentage estimation.
-12. Disease severity classification.
+The proposed research methodology consists of the following stages.
 
-## 4. Dataset Description
+### Stage 1: Field Video Acquisition
 
-The study uses a collection of 3,000 mango leaf images obtained from orchard data and video-derived frames.
+Mango leaf videos are collected from orchard environments under real-field conditions. The recorded videos capture variations in illumination, leaf appearance and background conditions.
 
-Image annotation was performed using Roboflow. The dataset contains two classes:
+### Stage 2: Video Frame Extraction
 
-| Class ID | Class Name |
+Frames are extracted from the recorded videos using a fixed sampling interval of every 15 frames.
+
+This process generates individual mango leaf images for subsequent dataset preparation.
+
+### Stage 3: Leaf Selection and Quality Screening
+
+The extracted frames are reviewed to identify suitable images for the study.
+
+Poor-quality images, including blurred, duplicate, occluded and unsuitable frames, are excluded during the selection process.
+
+### Stage 4: Manual Polygon Annotation Using Roboflow
+
+The selected images are uploaded to Roboflow for manual polygon annotation.
+
+Two annotation classes are defined:
+
+| Class ID | Class name |
 |---|---|
 | 0 | Anthracnose |
 | 1 | Leaf |
 
-The dataset was configured for the following partitioning:
+Polygon annotations are used to represent mango leaf boundaries and anthracnose-affected regions.
 
-| Dataset | Percentage | Number of Images |
-|---|---:|---:|
-| Training | 70% | 2,100 |
-| Validation | 15% | 450 |
-| Testing | 15% | 450 |
-| **Total** | **100%** | **3,000** |
+### Stage 5: Image Preprocessing in Roboflow
 
-These counts describe the original dataset partition. Augmented training image counts may differ.
-
-### Dataset Availability
-
-The dataset was prepared using Roboflow and is maintained separately from this source-code repository.
-
-The dataset export and annotation information are documented in the `dataset/` directory.
-
-## 5. Image Preprocessing
-
-The following preprocessing operations were configured in Roboflow:
+The following preprocessing operations are configured in Roboflow:
 
 - Auto-Orient.
 - Resize using Stretch to 640 × 640 pixels.
 
-### Data Augmentation
+### Stage 6: Dataset Generation and Export
 
-The Roboflow augmentation configuration included:
+The annotated dataset is generated and exported in YOLOv8 segmentation format.
+
+The dataset is configured using the following partitioning strategy:
+
+| Dataset | Percentage |
+|---|---:|
+| Training | 70% |
+| Validation | 15% |
+| Testing | 15% |
+
+The exported dataset contains images, corresponding annotation files and the dataset configuration file (`data.yaml`).
+
+### Stage 7: YOLOv8-Seg Model Training
+
+The exported dataset is used to train the YOLOv8n-Seg instance segmentation model.
+
+The training and validation subsets are used during model development, while the independent test subset is reserved for final performance evaluation.
+
+### Stage 8: Leaf Validation and Disease Segmentation
+
+The trained model is used to identify mango leaf regions and anthracnose-affected regions.
+
+A leaf validation step is incorporated before proceeding with disease analysis.
+
+### Stage 9: Pixel-Wise Disease Area Calculation
+
+The predicted segmentation masks are used to calculate the leaf area and anthracnose-affected area.
+
+Disease severity is estimated using the ratio of diseased leaf pixels to total leaf pixels.
+
+### Stage 10: Quantitative Disease Severity Classification
+
+The estimated disease severity percentage is categorized into predefined severity levels.
+
+## 4. Roboflow Preprocessing and Augmentation
+
+The following image preprocessing settings were configured in Roboflow.
+
+**Preprocessing:**
+
+| Operation | Configuration |
+|---|---|
+| Auto-Orient | Applied |
+| Resize | Stretch to 640 × 640 pixels |
+
+**Augmentation:**
 
 | Augmentation | Configuration |
 |---|---|
 | Outputs per training example | 3 |
-| Flip | Horizontal |
+| Horizontal Flip | Applied |
 | Rotation | -10° to +10° |
 | Brightness | -15% to +15% |
 | Exposure | -10% to +10% |
@@ -86,91 +119,93 @@ The Roboflow augmentation configuration included:
 
 These augmentation settings were configured for the training dataset.
 
-## 6. Model and Implementation
+## 5. Dataset Description
+
+The study uses a customized mango leaf dataset containing 3,000 images extracted from orchard videos.
+
+The images are annotated using polygon-based annotations in Roboflow.
+
+The dataset includes:
+
+- Healthy mango leaf images.
+- Anthracnose-affected mango leaf images.
+- Leaf segmentation annotations.
+- Anthracnose lesion annotations.
+
+The dataset is organized into training, validation and testing subsets using a 70:15:15 partitioning strategy.
+
+The exported dataset is maintained separately from this source-code repository. Dataset access information is provided through the associated research article and dataset repository.
+
+## 6. Model Architecture and Implementation
 
 | Parameter | Description |
 |---|---|
-| Model | YOLOv8n-Seg |
-| Framework | Ultralytics YOLO |
+| Model architecture | YOLOv8n-Seg |
 | Task | Instance segmentation |
-| Programming language | Python |
-| Image processing | OpenCV |
-| Input resolution | 640 × 640 pixels |
 | Number of classes | 2 |
+| Input image size | 640 × 640 pixels |
+| Programming language | Python |
+| Deep learning framework | Ultralytics YOLO |
+| Image processing library | OpenCV |
 
 ## 7. Disease Severity Estimation
 
-Disease severity is calculated as the percentage of diseased leaf area relative to the total leaf area.
+Disease severity is calculated as the percentage of anthracnose-affected leaf area relative to the total segmented leaf area.
 
-The severity calculation is expressed as:
+The severity percentage is expressed as:
 
-\[
-S_r = \frac{A_d}{A_l}\times 100
-\]
+**Disease Severity (%) = (Anthracnose-affected leaf area / Total leaf area) × 100**
 
-where:
+The severity categories used in the study are:
 
-- \(S_r\) = Disease severity percentage.
-- \(A_d\) = Pixel area of the anthracnose-affected region.
-- \(A_l\) = Total segmented leaf area.
-
-### Severity Classification
-
-The severity thresholds used in the study are:
-
-| Category | Disease Severity |
+| Category | Disease severity |
 |---|---|
 | Healthy | 0% |
-| Mild | Greater than 0% to 10% |
-| Moderate | Greater than 10% to 25% |
-| Severe | Greater than 25% |
+| Mild | >0–10% |
+| Moderate | >10–25% |
+| Severe | >25% |
+
+The classification is based on the calculated disease severity percentage.
 
 ## 8. Repository Structure
 
 ```text
 mango-anthracnose-yolov8-seg/
 │
+├── README.md
+├── requirements.txt
+│
 ├── dataset/
 │   ├── raw_videos/
 │   ├── extracted_frames/
-│   ├── roboflow_export/
-│   └── README.md
+│   └── roboflow_export/
 │
 ├── src/
 │   ├── preprocessing.py
-│   └── README.md
+│   ├── extract_frames.py
+│   ├── train.py
+│   ├── evaluate.py
+│   └── severity_estimation.py
 │
 ├── config/
-│   └── README.md
+│   └── data.yaml
 │
 ├── notebooks/
-│
 ├── examples/
-│   └── README.md
-│
 ├── weights/
-│   └── README.md
-│
 ├── results/
-│   └── README.md
-│
-├── requirements.txt
-└── README.md
+└── docs/
 ```
-
-Additional training, evaluation and severity estimation scripts will be documented as their implementations are finalized.
 
 ## 9. Installation
 
-Python 3.11 or a compatible Python environment is recommended.
+The implementation uses Python and the Ultralytics YOLO framework.
 
-Install the required packages using:
+Install the required dependencies using:
 
 ```bash
-pip install ultralytics opencv-python numpy
+pip install -r requirements.txt
 ```
-
-Additional dependencies will be listed in `requirements.txt`.
 
 ## 10. Dataset Preparation
 
@@ -182,56 +217,47 @@ Extract the dataset into:
 dataset/roboflow_export/
 ```
 
-The exported dataset is expected to contain:
+The exported dataset should contain:
 
 - Training images and annotations.
 - Validation images and annotations.
 - Testing images and annotations.
 - Dataset configuration file (`data.yaml`).
 
-The annotation files should be checked to ensure that polygon segmentation annotations are preserved for the intended segmentation classes.
+Verify that polygon annotations are preserved for the intended segmentation classes before model training.
 
-## 11. Experimental Results
+## 11. Model Training and Evaluation
 
-The `results/` directory is intended to contain the experimental outputs, including:
+The YOLOv8n-Seg model is trained using the exported dataset.
 
-- Model training curves.
-- Confusion matrix.
-- Segmentation evaluation results.
-- ROC curve.
-- Disease severity analysis.
-- Example segmentation predictions.
+The evaluation stage examines the model's detection and segmentation performance using the evaluation metrics and analysis procedures described in the research article.
 
-Only verified experimental results will be included in the repository.
+Training outputs, model checkpoints, evaluation figures and segmentation visualizations will be organized in the corresponding repository directories.
 
 ## 12. Reproducibility
 
-This repository is intended to provide the Python implementation, configuration files and documentation required to understand and reproduce the mango anthracnose detection and severity estimation methodology.
+This repository is intended to provide the source code, configuration files and documentation associated with the proposed mango anthracnose detection and severity estimation methodology.
 
-The final training configuration, dataset version, evaluation procedure and experimental settings will be documented alongside the corresponding implementation.
+The experimental implementation and dataset configuration are organized to support reproducibility of the reported research.
 
 ## 13. Code Availability
 
-The source code for this study is available at:
+The source code associated with this research is available at:
 
 https://github.com/bhargavi23phd7186-glitch/mango-anthracnose-yolov8-seg
 
-A permanent archived version and DOI will be added following repository archiving through Zenodo.
+A permanent archived version and DOI will be provided through Zenodo after repository archiving.
 
-## 14. Dataset Attribution
-
-The Roboflow dataset export identifies its license as CC BY 4.0.
-
-Appropriate attribution and applicable licensing conditions must be followed when accessing or redistributing the dataset.
-
-## 15. Citation
+## 14. Citation
 
 If you use this implementation in your research, please cite the associated research article:
 
 **Polygon-Based Instance Segmentation for Quantitative Severity Estimation of Mango Anthracnose Using YOLOv8-Seg**
 
-The complete publication citation will be added after publication.
+The complete publication details will be added after publication.
 
-## 16. License
+## 15. License
 
 The source-code license will be specified after confirming the authors' rights to distribute the implementation.
+
+Dataset licensing and attribution requirements are governed separately by the dataset's applicable license.
