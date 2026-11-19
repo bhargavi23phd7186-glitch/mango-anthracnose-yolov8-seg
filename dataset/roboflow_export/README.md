@@ -2,36 +2,53 @@
 
 ## 1. Dataset Overview
 
-The mango anthracnose dataset used in this research was prepared and annotated using Roboflow.
+This directory is intended to document and organize the customized mango anthracnose dataset exported from Roboflow.
 
-The dataset contains mango leaf images with two annotation classes:
+The dataset was prepared for mango leaf detection, anthracnose lesion segmentation and quantitative disease severity estimation using YOLOv8-Seg.
 
-| Class ID | Class Name |
+## 2. Dataset Source
+
+- Platform: Roboflow
+- Project: mango-pylut
+- Workspace: vidhu-9wo34
+- Original export version: 2
+- Annotation format selected: YOLOv8
+- Dataset license indicated in export metadata: CC BY 4.0
+
+Roboflow project:
+
+https://universe.roboflow.com/vidhu-9wo34/mango-pylut/dataset/2
+
+## 3. Annotation Classes
+
+The dataset configuration defines two classes:
+
+| Class ID | Class name |
 |---|---|
 | 0 | Anthracnose |
 | 1 | Leaf |
 
-## 2. Polygon Annotation
+Polygon annotations are used in the Roboflow annotation workflow to represent mango leaf regions and anthracnose-affected regions.
 
-Polygon annotations were used to represent mango leaf regions and anthracnose-affected regions.
+The exported annotation files must be verified to ensure that polygon coordinates are preserved for both classes before YOLOv8-Seg training.
 
-The annotations are intended for instance segmentation using YOLOv8-Seg.
-
-## 3. Image Preprocessing
+## 4. Image Preprocessing
 
 The following preprocessing operations were configured in Roboflow:
 
-- Auto-Orient
-- Resize: Stretch to 640 × 640 pixels
+| Operation | Configuration |
+|---|---|
+| Auto-Orient | Applied |
+| Resize | Stretch to 640 × 640 pixels |
 
-## 4. Data Augmentation
+## 5. Data Augmentation
 
-The Roboflow augmentation configuration included:
+The following augmentation settings were configured in Roboflow:
 
 | Augmentation | Configuration |
 |---|---|
 | Outputs per training example | 3 |
-| Flip | Horizontal |
+| Horizontal Flip | Applied |
 | Rotation | -10° to +10° |
 | Brightness | -15% to +15% |
 | Exposure | -10% to +10% |
@@ -39,24 +56,26 @@ The Roboflow augmentation configuration included:
 
 These settings were configured for the training dataset.
 
-## 5. Dataset Partitioning
+## 6. Dataset Partitioning
 
-The dataset was configured using the following split:
+The Roboflow dataset was configured using the following split:
 
-| Dataset | Percentage |
+| Subset | Percentage |
 |---|---:|
 | Training | 70% |
 | Validation | 15% |
 | Testing | 15% |
 
-## 6. Export Format
+The original dataset split and the number of exported augmented images should be considered separately.
 
-The dataset was downloaded from Roboflow in YOLOv8 format for the instance segmentation workflow.
+## 7. Exported Dataset Structure
 
-The expected directory structure is:
+The expected YOLOv8 dataset organization is:
 
 ```text
 roboflow_export/
+│
+├── data.yaml
 │
 ├── train/
 │   ├── images/
@@ -66,27 +85,35 @@ roboflow_export/
 │   ├── images/
 │   └── labels/
 │
-├── test/
-│   ├── images/
-│   └── labels/
-│
-└── data.yaml
+└── test/
+    ├── images/
+    └── labels/
 ```
 
-## 7. Dataset Configuration
+The images and corresponding annotation files are organized according to their respective dataset subsets.
 
-The Roboflow dataset configuration identifies:
+## 8. Dataset Configuration
 
-- Workspace: vidhu-9wo34
-- Project: mango-pylut
-- Export version: 2
-- Number of classes: 2
-- Class names: anthracnose and leaf
+The `data.yaml` file specifies:
 
-## 8. Dataset Access
+- Training image directory.
+- Validation image directory.
+- Testing image directory.
+- Number of classes.
+- Class names.
 
-The exported dataset is maintained separately from this GitHub repository.
+The dataset configuration defines two classes: anthracnose and leaf.
+
+## 9. Dataset Availability
+
+The exported dataset is maintained separately from this GitHub source-code repository.
 
 Dataset access and redistribution are subject to the applicable Roboflow dataset license and attribution requirements.
 
-The exported annotation files should be verified to ensure polygon coordinates are preserved for both classes before YOLOv8-Seg training.
+The dataset files are not included in this directory.
+
+## 10. Usage
+
+Download the corresponding YOLOv8 segmentation dataset export from Roboflow and extract it into this directory.
+
+Verify the image folders, annotation files, polygon coordinates and `data.yaml` paths before model training.
