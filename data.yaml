@@ -1,0 +1,14 @@
+
+# Mango Anthracnose YOLOv8-Seg Dataset Configuration
+
+path: mango_dataset
+
+train: train/images
+val: valid/images
+test: test/images
+
+names:
+  0: leaf
+  1: anthracnose
+
+nc: 2
